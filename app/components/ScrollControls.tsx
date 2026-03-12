@@ -6,15 +6,19 @@ import { useState, useEffect, useRef } from "react";
 interface ScrollControlsProps {
   settings: ScrollSettings;
   isScrolling: boolean;
+  isPaused: boolean;
   onSettingsChange: (settings: Partial<ScrollSettings>) => void;
   onToggleScroll: () => void;
+  onResume: () => void;
 }
 
 export default function ScrollControls({
   settings,
   isScrolling,
+  isPaused,
   onSettingsChange,
   onToggleScroll,
+  onResume,
 }: ScrollControlsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 16 }); // top-right by default
@@ -130,18 +134,17 @@ export default function ScrollControls({
   }, [isDragging, dragStart, position]);
 
   const handleButtonClick = () => {
-    if (isDragging) return; // Don't trigger click if dragging
+    if (isDragging) return;
     
     if (settings.mode === "auto") {
-      if (isScrolling) {
-        // If scrolling, pause it
+      if (isPaused) {
+        onResume();
+      } else if (isScrolling) {
         onToggleScroll();
       } else {
-        // If not scrolling, toggle panel
         setIsExpanded(!isExpanded);
       }
     } else {
-      // Manual mode - just toggle panel
       setIsExpanded(!isExpanded);
     }
   };
@@ -162,13 +165,29 @@ export default function ScrollControls({
         className={`md:hidden fixed z-50 text-white p-3 rounded-full shadow-lg transition-colors ${
           isDragging ? 'cursor-grabbing scale-110' : 'cursor-grab'
         } ${
-          settings.mode === "auto" && isScrolling
+          settings.mode === "auto" && isPaused
+            ? "bg-amber-500 hover:bg-amber-600 animate-pulse"
+            : settings.mode === "auto" && isScrolling
             ? "bg-red-500 hover:bg-red-600"
             : "bg-purple-600 hover:bg-purple-700"
         }`}
         aria-label="Control button"
       >
-        {settings.mode === "auto" && isScrolling ? (
+        {settings.mode === "auto" && isPaused ? (
+          // Play icon when paused
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              fillRule="evenodd"
+              d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        ) : settings.mode === "auto" && isScrolling ? (
           // Pause icon when auto-scrolling
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -257,7 +276,7 @@ export default function ScrollControls({
                   <button
                     key={preset.label}
                     onClick={() => onSettingsChange({ speed: preset.value })}
-                    className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                    className="px-2 py-1 text-xs text-gray-800 cursor-pointer bg-gray-300 hover:bg-gray-400 rounded transition-colors"
                   >
                     {preset.label}
                   </button>
@@ -267,11 +286,21 @@ export default function ScrollControls({
               <button
                 onClick={() => {
                   setIsExpanded(false);
-                  onToggleScroll();
+                  if (isPaused) {
+                    onResume();
+                  } else {
+                    onToggleScroll();
+                  }
                 }}
-                className="px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap bg-green-500 hover:bg-green-600 text-white"
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
+                  isPaused
+                    ? "bg-amber-500 hover:bg-amber-600 text-white"
+                    : isScrolling
+                    ? "bg-red-500 hover:bg-red-600 text-white"
+                    : "bg-green-500 hover:bg-green-600 text-white"
+                }`}
               >
-                ▶ Play
+                {isPaused ? "▶ Resume" : isScrolling ? "⏸ Pause" : "▶ Play"}
               </button>
             </>
           )}

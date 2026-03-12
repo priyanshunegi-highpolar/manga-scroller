@@ -11,7 +11,7 @@ const ContentViewer = forwardRef<HTMLDivElement, ContentViewerProps>(({ url }, r
   const [error, setError] = useState(false);
 
   return (
-    <div ref={ref} className="w-full overflow-y-auto" style={{ height: '100vh' }}>
+    <div ref={ref} className="w-full overflow-y-auto hide-scrollbar" style={{ height: '100vh' }}>
       {loading && (
         <div className="flex items-center justify-center h-screen bg-gray-100">
           <div className="text-center">

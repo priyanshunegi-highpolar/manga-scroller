@@ -16,7 +16,7 @@ function ReaderContent() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const { settings, updateSettings } = useScrollSettings();
-  const { isScrolling, toggle } = useAutoScroll({
+  const { isScrolling, isPaused, toggle, resume } = useAutoScroll({
     speed: settings.speed,
     enabled: settings.mode === "auto",
     scrollElement: scrollContainerRef.current,
@@ -27,6 +27,34 @@ function ReaderContent() {
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">
           <p className="text-xl text-gray-600 mb-4">No URL provided</p>
+          <a href="/" className="text-purple-600 hover:underline">
+            Go back to home
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // Validate URL protocol
+  try {
+    const parsed = new URL(url);
+    if (!["http:", "https:"].includes(parsed.protocol)) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+          <div className="text-center">
+            <p className="text-xl text-gray-600 mb-4">Invalid URL protocol</p>
+            <a href="/" className="text-purple-600 hover:underline">
+              Go back to home
+            </a>
+          </div>
+        </div>
+      );
+    }
+  } catch {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <p className="text-xl text-gray-600 mb-4">Invalid URL</p>
           <a href="/" className="text-purple-600 hover:underline">
             Go back to home
           </a>
@@ -54,8 +82,10 @@ function ReaderContent() {
       <ScrollControls
         settings={settings}
         isScrolling={isScrolling}
+        isPaused={isPaused}
         onSettingsChange={updateSettings}
         onToggleScroll={toggle}
+        onResume={resume}
       />
       
       <ContentViewer ref={scrollContainerRef} url={url} />

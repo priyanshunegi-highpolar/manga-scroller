@@ -19,7 +19,11 @@ export default function Home() {
     }
 
     try {
-      new URL(url);
+      const parsed = new URL(url);
+      if (!["http:", "https:"].includes(parsed.protocol)) {
+        setError("Please enter an HTTP or HTTPS URL");
+        return;
+      }
       router.push(`/reader?url=${encodeURIComponent(url)}`);
     } catch {
       setError("Please enter a valid URL");

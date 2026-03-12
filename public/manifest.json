@@ -1,0 +1,25 @@
+{
+  "name": "Manga Scroller",
+  "short_name": "MangaScroll",
+  "description": "Auto-scroll any manga or novel website at your own pace",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#7c3aed",
+  "orientation": "portrait-primary",
+  "categories": ["entertainment", "utilities"],
+  "icons": [
+    {
+      "src": "/logoZ.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logoX.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
