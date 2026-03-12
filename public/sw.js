@@ -1,5 +1,5 @@
 const CACHE_NAME = "manga-scroller-v1";
-const STATIC_ASSETS = ["/", "/logoZ.png", "/logoX.png"];
+const STATIC_ASSETS = ["/", "/logoZ.png", "/logoZ.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
