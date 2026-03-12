@@ -40,13 +40,13 @@ function ReaderContent() {
       {/* Logo - Top Left */}
       <Link
         href="/"
-        className="fixed top-1 left-1 z-50 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+        className="fixed top-1 left-1 z-50 bg-white/90 backdrop-blur-sm p-0.5 rounded-full shadow-lg hover:shadow-xl transition-shadow"
       >
         <Image
           src="/logoZ.png"
           alt="Manga Scroller"
-          width={40}
-          height={40}
+          width={50}
+          height={50}
           className="cursor-pointer"
         />
       </Link>
