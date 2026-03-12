@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Home() {
   const [url, setUrl] = useState("");
@@ -29,9 +30,19 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
       <main className="max-w-2xl w-full">
         <div className="text-center mb-12">
+          <div className="flex flex-col md:flex-row justify-center gap-2 items-center">
+            <Image
+              src="/logoZ.png"
+              alt="Manga Scroller Logo"
+              width={60}
+              height={60}
+              priority
+              className="drop-shadow-2xl mb-0 md:mb-5"
+            />
           <h1 className="text-5xl font-bold text-white mb-4">
             Manga Scroller
           </h1>
+          </div>
           <p className="text-xl text-purple-200">
             Auto-scroll any manga or novel website at your own pace
           </p>

@@ -2,6 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import ContentViewer from "../components/ContentViewer";
 import ScrollControls from "../components/ScrollControls";
 import FloatingButton from "../components/FloatingButton";
@@ -35,6 +37,20 @@ function ReaderContent() {
 
   return (
     <div className="relative h-screen overflow-hidden">
+      {/* Logo - Top Left */}
+      <Link
+        href="/"
+        className="fixed top-1 left-1 z-50 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+      >
+        <Image
+          src="/logoZ.png"
+          alt="Manga Scroller"
+          width={40}
+          height={40}
+          className="cursor-pointer"
+        />
+      </Link>
+
       <ScrollControls
         settings={settings}
         isScrolling={isScrolling}
